@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircularCloudLayoutTests", "CircularCloudLayoutTests\CircularCloudLayoutTests.csproj", "{335E2BD3-BB43-4D8C-B4C5-38AD60ABD6CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudVisualization", "TagsCloudVisualization\TagsCloudVisualization.csproj", "{33121F10-0159-4C38-B790-B17D00230605}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsSelection", "TagsCloudApplication\TagsSelection.csproj", "{6BC4502E-6D63-4D64-AF3F-E9FB10F8E28F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsSelectionTests", "TagsSelectionTests\TagsSelectionTests.csproj", "{94EB2F34-3250-4AA4-8DDB-B325DF347E6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTagsCloudApp", "ConsoleTagsCloudApp\ConsoleTagsCloudApp.csproj", "{31D4C118-2534-47E8-A19E-E77252004E89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagsCloudVisualisationTests", "TagsCloudVisualisationTests\TagsCloudVisualisationTests.csproj", "{8C081D86-FC08-4406-86B9-AC24C3A2373D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{335E2BD3-BB43-4D8C-B4C5-38AD60ABD6CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{335E2BD3-BB43-4D8C-B4C5-38AD60ABD6CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{335E2BD3-BB43-4D8C-B4C5-38AD60ABD6CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{335E2BD3-BB43-4D8C-B4C5-38AD60ABD6CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33121F10-0159-4C38-B790-B17D00230605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33121F10-0159-4C38-B790-B17D00230605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33121F10-0159-4C38-B790-B17D00230605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33121F10-0159-4C38-B790-B17D00230605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BC4502E-6D63-4D64-AF3F-E9FB10F8E28F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BC4502E-6D63-4D64-AF3F-E9FB10F8E28F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BC4502E-6D63-4D64-AF3F-E9FB10F8E28F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BC4502E-6D63-4D64-AF3F-E9FB10F8E28F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94EB2F34-3250-4AA4-8DDB-B325DF347E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94EB2F34-3250-4AA4-8DDB-B325DF347E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94EB2F34-3250-4AA4-8DDB-B325DF347E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94EB2F34-3250-4AA4-8DDB-B325DF347E6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31D4C118-2534-47E8-A19E-E77252004E89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31D4C118-2534-47E8-A19E-E77252004E89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31D4C118-2534-47E8-A19E-E77252004E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31D4C118-2534-47E8-A19E-E77252004E89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C081D86-FC08-4406-86B9-AC24C3A2373D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C081D86-FC08-4406-86B9-AC24C3A2373D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C081D86-FC08-4406-86B9-AC24C3A2373D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C081D86-FC08-4406-86B9-AC24C3A2373D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
