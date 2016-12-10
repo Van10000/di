@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,23 @@ namespace TagsCloudVisualisationTests
             var changed = ColorUtils.GetInRatio(first, second, ratio);
 
             changed.Should().Be(Color.FromArgb(60, 40, 24, 40));
+        }
+
+        [Test]
+        public void Check()
+        {
+            var fontFamily = new FontFamily("Times New Roman");
+            var font10 = new Font(fontFamily, 10);
+            var font20 = new Font(fontFamily, 20);
+            var font30 = new Font(fontFamily, 30);
+            var text = "Hello, world!";
+            var bitmap = new Bitmap(500, 500);
+            var graphics = Graphics.FromImage(bitmap);
+            var mes1 = graphics.MeasureString(text, font10);
+            var mes2 = graphics.MeasureString(text, font20);
+            var mes3 = graphics.MeasureString(text, font30);
+            var mes33 = graphics.MeasureString(text + text + text, font10); // width here differs from mes3 width
+            return;
         }
     }
 }

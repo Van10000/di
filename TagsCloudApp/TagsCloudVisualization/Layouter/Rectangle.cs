@@ -33,14 +33,14 @@ namespace TagsCloudVisualization.Layouter
                     yield return new Point(LeftDown.X + Size.Width * i, LeftDown.Y + Size.Height * j);
         }
 
-        private static bool Intersects1D(int firstCoord, int secondCoord, int firstSize, int secondSize)
-        {
-            return Math.Max(firstCoord, secondCoord) < Math.Min(firstCoord + firstSize, secondCoord + secondSize);
-        }
-
         public Rectangle GetShifted(Size shift)
         {
             return new Rectangle(LeftDown + shift, Size);
+        }
+
+        private static bool Intersects1D(int firstCoord, int secondCoord, int firstSize, int secondSize)
+        {
+            return Math.Max(firstCoord, secondCoord) < Math.Min(firstCoord + firstSize, secondCoord + secondSize);
         }
     }
 }

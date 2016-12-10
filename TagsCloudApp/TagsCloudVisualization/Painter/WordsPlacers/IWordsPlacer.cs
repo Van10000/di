@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using TagsCloudVisualization.Layouter;
 
 namespace TagsCloudVisualization.Painter.WordsPlacers
@@ -7,6 +8,6 @@ namespace TagsCloudVisualization.Painter.WordsPlacers
     {
         int ImageWidth { get; }
         int ImageHeight { get; }
-        WordPlaced[] GetWordsFormatted(Dictionary<string, int> wordsStatistics);
+        WordPlaced[] GetWordsFormatted(Dictionary<string, int> wordsStatistics, Dictionary<string, SizeF> wordsRelativeSizes);
     }
 }

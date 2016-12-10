@@ -60,7 +60,7 @@
     <Compile Include="Layouter\RectangleExtentions.cs" />
     <Compile Include="Layouter\Size.cs" />
     <Compile Include="RectanglesPainter.cs" />
-    <Compile Include="RectangleExtentions.cs" />
+    <Compile Include="DrawingExtentions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

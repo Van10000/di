@@ -32,28 +32,50 @@ namespace TagsCloudVisualization.Painter
         
         public void WritePictureToFile(Dictionary<string, int> wordsStatistics, string filename)
         {
-            var wordsFormatted = wordsPlacer.GetWordsFormatted(wordsStatistics);
             var bitmap = new Bitmap(imageSize.Width, imageSize.Height);
             var graphics = Graphics.FromImage(bitmap);
-            foreach (var word in wordsFormatted)
+            var sizes = GetWordsRelativeSizes(wordsStatistics.Keys, graphics);
+            var wordsFormatted = wordsPlacer
+                .GetWordsFormatted(wordsStatistics, sizes)
+                .ToList();
+            if (wordsFormatted.Count != 0)
             {
-                var brush = brushSelector.SelectBrush(word.Word, wordsStatistics[word.Word]);
-                DrawFormattedWord(graphics, word, brush);
+                foreach (var word in wordsFormatted)
+                {
+                    var brush = brushSelector.SelectBrush(word.Word, wordsStatistics[word.Word]);
+                    DrawFormattedWord(graphics, word, brush);
+                }
             }
             bitmap.Save(filename);
         }
 
-        private void DrawFormattedWord(Graphics graphics, WordPlaced word, Brush brush)
+        private Dictionary<string, SizeF> GetWordsRelativeSizes(IEnumerable<string> words, Graphics g)
         {
-            Font fontOfRightSize = GetFontOfRightSize(word.Rectangle);
-            graphics.DrawString(word.Word, fontOfRightSize, brush, word.Rectangle.ToDrawingRectangle());
+            var exampleFont = new Font(textFontFamily, 10);
+            return words.ToDictionary(word => word, word => g.MeasureString(word, exampleFont));
         }
 
-        private Font GetFontOfRightSize(Rectangle rect)
+        private void DrawFormattedWord(Graphics graphics, WordPlaced word, Brush brush)
         {
-            // there is a method to measure string size
-            // maybe better way would be to select word rectangle using this method
-            return new Font(textFontFamily, 10); //TODO
+            var font = GetFontOfRightSize(word.Word, word.Rectangle, graphics, textFontFamily);
+            graphics.DrawString(word.Word, font, brush, word.Rectangle.ToDrawingRectangle());
+        }
+
+        private Font GetFontOfRightSize(string str, Rectangle rect, Graphics g, FontFamily fontFamily)
+        {
+            // binary search for a good font
+            double minFontSize = 0;
+            double maxFontSize = 100;
+            while (maxFontSize - minFontSize > 0.01)
+            {
+                double fontSize = (minFontSize + maxFontSize) / 2;
+                var font = new Font(fontFamily, (float) fontSize);
+                if (g.MeasureString(str, font).IsInside(rect.Size))
+                    minFontSize = fontSize;
+                else
+                    maxFontSize = fontSize;
+            }
+            return new Font(fontFamily, (float) minFontSize);
         }
     }
 }

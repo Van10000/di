@@ -19,6 +19,11 @@ namespace TagsCloudVisualization.Layouter
             Height = height;
         }
 
+        public static Size CreateSafe(int width, int height)
+        {
+            return new Size(Math.Max(width, 1), Math.Max(height, 1));
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -40,9 +45,19 @@ namespace TagsCloudVisualization.Layouter
             }
         }
 
+        public static Size operator *(Size a, double d)
+        {
+            return CreateSafe(Round(a.Width * d), Round(a.Height * d));
+        }
+
         public static Size operator /(Size a, int d)
         {
-            return new Size(Math.Max(a.Width / d, 1), Math.Max(a.Height / d, 1));
+            return CreateSafe(a.Width / d, a.Height / d);
+        }
+
+        private static int Round(double val)
+        {
+            return (int)Math.Round(val);
         }
     }
 }
