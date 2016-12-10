@@ -18,7 +18,7 @@ namespace ConsoleTagsCloudApp
         public string ImageOutputFile { get; set; }
         
         [Option('a', "filtering_algo", DefaultValue = "exclude_low_length", HelpText = "Name of algo to filter words from the text")]
-        public string WordsFilteringAlgorithm { get; set; }
+        public string WordsFilteringAlgorithm { get; set; } // TODO: use enums here
 
         [Option('w', "image_width", DefaultValue = 500, HelpText = "Width of resulting image with tags cloud")]
         public int ImageWidth { get; set; }

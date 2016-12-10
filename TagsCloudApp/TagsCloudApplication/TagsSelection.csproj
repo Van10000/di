@@ -49,6 +49,7 @@
     <Compile Include="TextSuppliers\TxtFileTextSupplier.cs" />
     <Compile Include="Utils\IntValueDictionaryExtentions.cs" />
     <Compile Include="WordsSelectors\ComplexWordsSelector.cs" />
+    <Compile Include="WordsSelectors\ExcludeRareWordsSelector.cs" />
     <Compile Include="WordsStatisticsSuppliers\WordsStatisticsSupplier.cs" />
     <Compile Include="WordsSelectors\ExcludePartsOfSpeechSelector.cs" />
     <Compile Include="WordsSelectors\ExcludeLowLengthWordsSelector.cs" />

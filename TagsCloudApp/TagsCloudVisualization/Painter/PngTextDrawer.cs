@@ -34,6 +34,7 @@ namespace TagsCloudVisualization.Painter
         {
             var bitmap = new Bitmap(imageSize.Width, imageSize.Height);
             var graphics = Graphics.FromImage(bitmap);
+            graphics.FillRectangle(new SolidBrush(backgroundColor), new RectangleF(0, 0, imageSize.Width, imageSize.Height));
             var sizes = GetWordsRelativeSizes(wordsStatistics.Keys, graphics);
             var wordsFormatted = wordsPlacer
                 .GetWordsFormatted(wordsStatistics, sizes)

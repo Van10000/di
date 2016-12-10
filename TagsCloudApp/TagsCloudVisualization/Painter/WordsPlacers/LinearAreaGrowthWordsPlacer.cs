@@ -5,32 +5,29 @@ using System.Linq;
 using TagsCloudVisualization.Layouter;
 using Point = TagsCloudVisualization.Layouter.Point;
 using Rectangle = TagsCloudVisualization.Layouter.Rectangle;
+using Size = TagsCloudVisualization.Layouter.Size;
 
 namespace TagsCloudVisualization.Painter.WordsPlacers
 {
     public class LinearAreaGrowthWordsPlacer : IWordsPlacer
     {
-        public int ImageWidth { get; set; }
-        public int ImageHeight { get; set; }
+        public readonly Size ImageSize;
+        private readonly ILayouter layouter;
 
         public Point Center => new Point(ImageWidth / 2, ImageHeight / 2);
-
-        private CircularCloudLayouter layouter; // it's not abstraction because here we need this specific layouter
-
-        public LinearAreaGrowthWordsPlacer()
+        public int ImageWidth => ImageSize.Width;
+        public int ImageHeight => ImageSize.Height;
+        
+        public LinearAreaGrowthWordsPlacer(ILayouter layouter, Size imageSize)
         {
-            ImageWidth = 500;
-            ImageHeight = 500;
+            ImageSize = imageSize;
+            this.layouter = layouter;
         }
 
         public WordPlaced[] GetWordsFormatted(Dictionary<string, int> wordsStatistics, Dictionary<string, SizeF> wordsRelativeSizes)
         {
-            layouter = new CircularCloudLayouter(Center);
-            //var totalLettersNumber = wordsStatistics.Sum(pair => pair.Key.Length * pair.Value);
-            //var maximalWordLength = wordsStatistics.Keys.Max(str => str.Length);
-            //var letterWidth = FindMaximalAppropriateLetterWidth(totalLettersNumber, maximalWordLength);
-            //var letterHeight = letterWidth * WidthToHeightLetterRatio;
             var sizes = wordsStatistics
+                .OrderByDescending(pair => pair.Value)
                 .Select(pair => wordsRelativeSizes[pair.Key].GetMultiplied(pair.Value))
                 .Select(size => size.CeilToCustom());
             

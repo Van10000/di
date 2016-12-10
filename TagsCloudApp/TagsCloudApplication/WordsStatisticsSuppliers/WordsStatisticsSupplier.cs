@@ -1,37 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using TagsCloudApplication.TextSuppliers;
 using TagsCloudApplication.Utils;
 
 namespace TagsCloudApplication.WordsStatisticsSuppliers
 {
     public class WordsStatisticsSupplier
     {
-        public readonly string Text;
+        private readonly ITextSupplier textSupplier;
 
-        public WordsStatisticsSupplier(string text)
+        public WordsStatisticsSupplier(ITextSupplier textSupplier)
         {
-            this.Text = text;
+            this.textSupplier = textSupplier;
         }
 
         public Dictionary<string, int> GetWordsStatistics()
         {
+            var text = textSupplier.SupplyText();
             var words = new Dictionary<string, int>();
-            for (var i = 0; i < Text.Length; ++i)
-                if (char.IsLetter(Text[i]))
+            for (var i = 0; i < text.Length; ++i)
+                if (char.IsLetter(text[i]))
                 {
-                    var word = GetWord(i, out i);
+                    var word = GetWord(text, i, out i);
                     words.AddIntValue(word, 1);
                 }
             return words;
         }
 
-        private string GetWord(int currentPosition, out int nextPosition)
+        private string GetWord(string text, int currentPosition, out int nextPosition)
         {
             var result = new StringBuilder();
-            nextPosition = Text.Length;
-            for (int i = currentPosition; i < Text.Length; ++i)
-                if (char.IsLetter(Text[i]))
-                    result.Append(Text[i]);
+            nextPosition = text.Length;
+            for (int i = currentPosition; i < text.Length; ++i)
+                if (char.IsLetter(text[i]))
+                    result.Append(text[i]);
                 else
                 {
                     nextPosition = i;

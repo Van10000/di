@@ -2,7 +2,7 @@
 
 namespace TagsCloudVisualization.Layouter
 {
-    interface ILayouter
+    public interface ILayouter
     {
         IEnumerable<Rectangle> PutAllRectangles(IEnumerable<Size> sizes);
     }
