@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using FakeItEasy;
 using FluentAssertions;
+using TagsCloudApplication.TextSuppliers;
 using TagsCloudApplication.WordsStatisticsSuppliers;
 
 namespace TagsSelectionTests
@@ -19,7 +21,10 @@ namespace TagsSelectionTests
         [TestCase("Works regardless the language.", new [] {"Works", "regardless", "the", "language"})]
         public void OneOfEveryWordTest(string text, string[] words)
         {
-            var statistics = new WordsStatisticsSupplier(text).GetWordsStatistics();
+            var supplier = A.Fake<ITextSupplier>();
+            A.CallTo(() => supplier.SupplyText()).Returns(text);
+
+            var statistics = new WordsStatisticsSupplier(supplier).GetWordsStatistics();
 
             statistics.Keys.Should().BeEquivalentTo(words);
             statistics.Values.ShouldAllBeEquivalentTo(1);

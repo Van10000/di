@@ -19,7 +19,7 @@ namespace TagsCloudVisualization.Painter.BrushSelectors
             maximalWordOccurrenceNumber = wordsStatistics.Values.Max();
         }
 
-        public Brush SelectBrush(string word, int count)
+        public override Brush SelectBrush(string word, int count)
         {
             var frequencyCoefficient = count / (double)(maximalWordOccurrenceNumber + 1);
             return new SolidBrush(ColorUtils.GetInRatio(mostFrequentWordColor, leastFrequentWordColor, frequencyCoefficient));

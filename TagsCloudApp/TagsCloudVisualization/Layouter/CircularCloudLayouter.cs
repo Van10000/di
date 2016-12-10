@@ -11,9 +11,9 @@ namespace TagsCloudVisualization.Layouter
 
         public ReadOnlyCollection<Rectangle> PreviousRectangles => previousRectangles.AsReadOnly();
 
-        public CircularCloudLayouter(Point center)
+        public CircularCloudLayouter(Point center = null)
         {
-            this.center = center;
+            this.center = center ?? new Point(0, 0);
         }
 
         public Rectangle PutNextRectangle(Size rectangleSize)
