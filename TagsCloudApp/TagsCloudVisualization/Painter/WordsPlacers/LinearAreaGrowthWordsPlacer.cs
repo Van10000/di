@@ -50,7 +50,6 @@ namespace TagsCloudVisualization.Painter.WordsPlacers
             var maxXScale = Math.Min(GetMaxScale(minX, ImageWidth), GetMaxScale(maxX, ImageWidth));
             var maxYScale = Math.Min(GetMaxScale(minY, ImageHeight), GetMaxScale(maxY, ImageHeight));
             var scaleCoeff = Math.Min(maxXScale, maxYScale);
-            scaleCoeff *= 0.95; // to stay little margins at the edges
             return rectList.Select(rect => rect.GetApproximatelyScaled(Center, scaleCoeff));
         }
 

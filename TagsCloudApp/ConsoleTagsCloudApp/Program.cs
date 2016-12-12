@@ -32,7 +32,21 @@ namespace ConsoleTagsCloudApp
 
         static void Main(string[] args)
         {
-            args = new[] {"-t", "text.txt", "-i", "image.png", "-h", "5000", "-w", "5000"};
+            //if (args.Length == 0)
+            //{
+            //    args = new[]
+            //    {
+            //        "-t", "text.txt",
+            //        "-i", "image.png",
+            //        "-h", "5000",
+            //        "-w", "5000",
+            //        "-n", "500",
+            //        "-b", "255", "30", "30", "30",
+            //        "-s", "Gradient",
+            //        "-l", "255", "150", "255", "150",
+            //        "-m", "255", "255", "0", "0"
+            //    };
+            //}
             var options = new Options();
             if (!Parser.Default.ParseArguments(args, options))
             {
