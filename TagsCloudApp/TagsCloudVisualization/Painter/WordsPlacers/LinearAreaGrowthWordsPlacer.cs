@@ -31,7 +31,9 @@ namespace TagsCloudVisualization.Painter.WordsPlacers
                 .Select(pair => wordsRelativeSizes[pair.Key].GetMultiplied(pair.Value))
                 .Select(size => size.CeilToCustom());
             
-            var rectangles = layouter.PutAllRectangles(sizes);
+            var rectangles = layouter
+                .PutAllRectangles(sizes)
+                .Select(rect => rect.GetShifted(new Size(Center.X, Center.Y)));
             var scaled = ScaleToFitPrecisely(rectangles);
             return wordsStatistics.Keys
                 .Zip(scaled, (word, rect) => new WordPlaced(word, rect))

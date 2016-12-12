@@ -32,6 +32,7 @@ namespace ConsoleTagsCloudApp
 
         static void Main(string[] args)
         {
+            args = new[] {"-t", "text.txt", "-i", "image.png", "-h", "5000", "-w", "5000"};
             var options = new Options();
             if (!Parser.Default.ParseArguments(args, options))
             {

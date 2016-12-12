@@ -13,7 +13,7 @@ namespace ConsoleTagsCloudApp
     {
         [Option('t', "text_input_file", HelpText = "Name of file with text containing words to build tags cloud.", Required = true)]
         public string TextInputFile { get; set; }
-
+        
         [Option('i', "image_output_file", HelpText = "Name of file to output image of tags cloud", Required = true)]
         public string ImageOutputFile { get; set; }
         

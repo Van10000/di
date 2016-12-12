@@ -66,7 +66,7 @@ namespace TagsCloudVisualization.Painter
         {
             // binary search for a good font
             double minFontSize = 0;
-            double maxFontSize = 100;
+            double maxFontSize = 10000;
             while (maxFontSize - minFontSize > 0.01)
             {
                 double fontSize = (minFontSize + maxFontSize) / 2;
