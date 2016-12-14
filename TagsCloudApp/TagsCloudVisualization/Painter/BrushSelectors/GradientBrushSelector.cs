@@ -5,23 +5,28 @@ using System.Linq;
 
 namespace TagsCloudVisualization.Painter.BrushSelectors
 {
-    public class GradientBrushSelector : StatisticsBrushSelector
+    public class GradientBrushSelector : IBrushSelector
     {
         private readonly Color mostFrequentWordColor;
         private readonly Color leastFrequentWordColor;
-        private readonly int maximalWordOccurrenceNumber;
+        private readonly List<int> sortedWordsCounts;
 
-        public GradientBrushSelector(Dictionary<string, int> wordsStatistics, Color mostFrequentWordColor, Color leastFrequentWordColor) 
-            : base(wordsStatistics)
+        public GradientBrushSelector(IEnumerable<int> wordsCounts, GradientColorsPair colorsPair)
+            : this(wordsCounts, colorsPair.MostFrequent, colorsPair.LeastFrequent)
+        { }
+
+        public GradientBrushSelector(IEnumerable<int> wordsCounts, Color mostFrequentWordColor, Color leastFrequentWordColor)
         {
             this.mostFrequentWordColor = mostFrequentWordColor;
             this.leastFrequentWordColor = leastFrequentWordColor;
-            maximalWordOccurrenceNumber = wordsStatistics.Values.Max();
+            sortedWordsCounts = wordsCounts.OrderBy(x => x).ToList();
         }
 
-        public override Brush SelectBrush(string word, int count)
+        public Brush SelectBrush(string word, int count)
         {
-            var frequencyCoefficient = count / (double)(maximalWordOccurrenceNumber + 1);
+            var numberOfElementsBefore = sortedWordsCounts.FindFirstBiggerOrEqualIndex(count);
+            var frequencyCoefficient = numberOfElementsBefore / (double)sortedWordsCounts.Count;
+            frequencyCoefficient = Math.Pow(frequencyCoefficient, Math.Pow(Math.Log(sortedWordsCounts.Count), 1.5));
             return new SolidBrush(ColorUtils.GetInRatio(mostFrequentWordColor, leastFrequentWordColor, frequencyCoefficient));
         }
     }

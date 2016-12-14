@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using java.util;
 using WiktionaryNET;
 
 namespace TagsCloudApplication.WordsSelectors
@@ -20,11 +21,10 @@ namespace TagsCloudApplication.WordsSelectors
         public const string Conjunction = "Conjunction";
         public const string Interjection = "Interjection";
 
-        //private static readonly string dictionariesPath =
+        //private static readonly string taggerPath =
         //    @"C:\Users\ISmir\Desktop\учёба\2 курс\шпора\dependency injection\di\TagsCloudApp\TagsCloudApplication";
-        //private static readonly Hunspell Hunspell = new Hunspell(
-        //    Path.Combine(dictionariesPath, "Russian.aff"), 
-        //    Path.Combine(dictionariesPath, "Russian.dic"));
+
+        //private static readonly MaxentTagger Tagger = new MaxentTagger(Path.Combine(taggerPath, @"english-caseless-left3words-distsim.tagger"));
 
         public ExcludePartsOfSpeechSelector(params string[] partsOfSpeech) : base(word => ShouldExclude(partsOfSpeech, word))
         {
@@ -32,8 +32,9 @@ namespace TagsCloudApplication.WordsSelectors
 
         public static bool ShouldExclude(string[] excludingPartsOfSpeech, string word)
         {
-            var wordInfo = Wiktionary.Define(word);
-            return excludingPartsOfSpeech.Any(part => wordInfo.WordType.Contains(part));
+            //var wordInfo = Tagger.tagString(word);
+            //return excludingPartsOfSpeech.Any(part => wordInfo.Contains(part));
+            return true;
         }
     }
 }

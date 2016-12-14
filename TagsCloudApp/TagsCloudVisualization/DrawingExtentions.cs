@@ -9,7 +9,7 @@ using Size = TagsCloudVisualization.Layouter.Size;
 
 namespace TagsCloudVisualization
 {
-    public static class DrawingExtentions
+    internal static class DrawingExtentions
     {
         public static System.Drawing.Rectangle ToDrawingRectangle(this Layouter.Rectangle rect)
         {
@@ -20,10 +20,10 @@ namespace TagsCloudVisualization
                 rect.Size.Height);
         }
 
-        public static System.Drawing.SizeF GetMultiplied(this SizeF size, float multiplier) 
+        public static SizeF GetMultiplied(this SizeF size, float multiplier) 
             => new SizeF(size.Width * multiplier, size.Height * multiplier);
 
-        public static Size CeilToCustom(this SizeF size) => new Size(Ceil(size.Width), Ceil(size.Height));
+        public static Size Ceiling(this SizeF size) => new Size(Ceil(size.Width), Ceil(size.Height));
 
         public static bool IsInside(this SizeF size, Size appropriateSize)
         {

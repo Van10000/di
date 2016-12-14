@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ListExtentions.cs" />
     <Compile Include="Painter\BrushSelectors\ColorUtils.cs" />
+    <Compile Include="Painter\BrushSelectors\GradientColorsPair.cs" />
     <Compile Include="Painter\BrushSelectors\IBrushSelector.cs" />
     <Compile Include="Painter\BrushSelectors\RandomColorBrushSelector.cs" />
     <Compile Include="Painter\BrushSelectors\GradientBrushSelector.cs" />
@@ -49,7 +51,6 @@
     <Compile Include="Layouter\CircularCloudLayouter.cs" />
     <Compile Include="Layouter\ILayouter.cs" />
     <Compile Include="Layouter\Point.cs" />
-    <Compile Include="Painter\BrushSelectors\StatisticsBrushSelector.cs" />
     <Compile Include="Painter\ITextDrawer.cs" />
     <Compile Include="Painter\WordsPlacers\LinearAreaGrowthWordsPlacer.cs" />
     <Compile Include="Painter\WordsPlacers\IWordsPlacer.cs" />

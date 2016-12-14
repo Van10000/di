@@ -22,8 +22,6 @@ namespace TagsCloudVisualization.Painter.BrushSelectors
             => Color.FromArgb(127, rand.Next(100, 255), rand.Next(100, 255), rand.Next(100, 255));
 
         private static int GetInRatio(int first, int second, double ratio)
-        {
-            return (int)(first * ratio + second * (1 - ratio));
-        }
+            => (int)(first * ratio + second * (1 - ratio));
     }
 }

@@ -29,7 +29,7 @@ namespace TagsCloudVisualization.Painter.WordsPlacers
             var sizes = wordsStatistics
                 .OrderByDescending(pair => pair.Value)
                 .Select(pair => wordsRelativeSizes[pair.Key].GetMultiplied(pair.Value))
-                .Select(size => size.CeilToCustom());
+                .Select(size => size.Ceiling());
             
             var rectangles = layouter
                 .PutAllRectangles(sizes)
