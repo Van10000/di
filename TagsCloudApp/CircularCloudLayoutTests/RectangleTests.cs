@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using TagsCloudVisualization;
 using TagsCloudVisualization.Layouter;
 
 namespace CircularCloudLayoutTests

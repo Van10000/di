@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TagsCloudApplication.WordsSelectors
+﻿namespace TagsCloudApplication.WordsSelectors
 {
     public class ExcludeLowLengthWordsSelector : PredicateWordsSelector
     {
-        public ExcludeLowLengthWordsSelector() : base(WordIsHighLength)
+        public ExcludeLowLengthWordsSelector(int lowestPossibleLength) 
+            : base(word => WordIsHighLength(word, lowestPossibleLength))
         {
         }
 
-        public static bool WordIsHighLength(string word)
+        public static bool WordIsHighLength(string word, int lowestPossibleLength)
         {
-            return word.Length > 3;
+            return word.Length >= lowestPossibleLength;
         }
     }
 }

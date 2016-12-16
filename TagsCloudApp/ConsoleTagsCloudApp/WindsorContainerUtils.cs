@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using TagsCloudApplication.TextSuppliers;
@@ -18,17 +15,9 @@ using Size = TagsCloudVisualization.Layouter.Size;
 
 namespace ConsoleTagsCloudApp
 {
-    internal class WindsorContainerUtils
+    internal static class WindsorContainerUtils
     {
-        private static Color ToColor(string[] channels)
-        {
-            if (channels.Length != 4)
-                throw new ArgumentException("There should be exactly 4 channels of color: alpha, red, green and blue.");
-            var intChannels = channels.Select(int.Parse).ToArray();
-            return Color.FromArgb(intChannels[0], intChannels[1], intChannels[2], intChannels[3]);
-        }
-
-        private static readonly Dictionary<BrushSelectorType, Action<Options, WindsorContainer, Dictionary<string, int>>> brushSelectorRegisterActions =
+        private static readonly Dictionary<BrushSelectorType, Action<Options, WindsorContainer, Dictionary<string, int>>> BrushSelectorRegisterActions =
             new Dictionary<BrushSelectorType, Action<Options, WindsorContainer, Dictionary<string, int>>>()
         {
             {BrushSelectorType.Random, (options, container, stat) => RegisterRandomBrushSelector(container)},
@@ -36,6 +25,13 @@ namespace ConsoleTagsCloudApp
             {BrushSelectorType.Gradient, (options, container, stat) => RegisterGradientColorBrushSelector(container, options, stat)}
         };
 
+        private static readonly Dictionary<FilteringAlgorithmName, Action<WindsorContainer, Options>> WordsSelectorRegisterActions = 
+            new Dictionary<FilteringAlgorithmName, Action<WindsorContainer, Options>>()
+        {
+            {FilteringAlgorithmName.ExcludeBoring, RegisterExcludeBoringWordsSelector },
+            {FilteringAlgorithmName.ExcludeLowLength, RegisterExcludeLowLengthSelector }
+        };
+        
         private static void RegisterRandomBrushSelector(WindsorContainer container)
         {
             container.Register(
@@ -50,14 +46,14 @@ namespace ConsoleTagsCloudApp
                 Component
                     .For<IBrushSelector>()
                     .ImplementedBy<SingleColorBrushSelector>()
-                    .DependsOn(Dependency.OnValue<Color>(ToColor(options.TextColor))));
+                    .DependsOn(Dependency.OnValue<Color>(ColorParser.Parse(options.TextColor))));
         }
 
         private static void RegisterGradientColorBrushSelector(WindsorContainer container, Options options, Dictionary<string, int> wordsStatistics)
         {
             var colorPair = new GradientColorsPair(
-                ToColor(options.MostFrequentTextColor),
-                ToColor(options.LeastFrequentTextColor));
+                ColorParser.Parse(options.MostFrequentTextColor),
+                ColorParser.Parse(options.LeastFrequentTextColor));
 
             container.Register(
                 Component
@@ -67,27 +63,43 @@ namespace ConsoleTagsCloudApp
                     .DependsOn(Dependency.OnValue<GradientColorsPair>(colorPair)));
         }
 
+        private static void RegisterExcludeLowLengthSelector(WindsorContainer container, Options options)
+        {
+            container.Register(
+                Component
+                    .For<IWordsSelector>()
+                    .ImplementedBy<ExcludeLowLengthWordsSelector>()
+                    .DependsOn(Dependency.OnValue<int>(4)));
+        }
+
+        private static void RegisterExcludeBoringWordsSelector(WindsorContainer container, Options options)
+        {
+            container.Register(
+                Component
+                    .For<IWordsSelector>()
+                    .ImplementedBy<ExcludeLowLengthWordsSelector>()
+                    .DependsOn(Dependency.OnValue<int>(2)),
+                Component
+                    .For<IWordsSelector>()
+                    .ImplementedBy<ExcludeBoringWordsSelector>());
+        }
+
         public static void RegisterTextDrawerComponents(WindsorContainer container, Options options, Dictionary<string, int> wordsStatistics)
         {
             var imageSize = new Size(options.ImageWidth, options.ImageHeight);
-            var backgroundColor = ToColor(options.BackgroundColor);
+            var backgroundColor = ColorParser.Parse(options.BackgroundColor);
             var fontFamily = new FontFamily(options.FontFamily);
 
             container.Register(
                 Component
                     .For<ILayouter>()
                     .ImplementedBy<CircularCloudLayouter>());
-
-            //container.Register(
-            //    Component.For<FontFamily>().Instance(fontFamily));
-            //container.Register(
-            //    Component.For<Size>().Instance(imageSize));
             container.Register(
                 Component
                     .For<IWordsPlacer>()
                     .ImplementedBy<LinearAreaGrowthWordsPlacer>()
                     .DependsOn(Dependency.OnValue<Size>(imageSize)));
-            brushSelectorRegisterActions[options.TextBrushSelector](options, container, wordsStatistics);
+            BrushSelectorRegisterActions[options.TextBrushSelector](options, container, wordsStatistics);
             container.Register(
                 Component
                     .For<ITextDrawer>()
@@ -95,7 +107,7 @@ namespace ConsoleTagsCloudApp
                     .DependsOn(Dependency.OnValue<Color>(backgroundColor))
                     .DependsOn(Dependency.OnValue<Size>(imageSize))
                     .DependsOn(Dependency.OnValue<FontFamily>(fontFamily)));
-        } 
+        }
 
         public static void RegisterWordsSelectorComponents(WindsorContainer container, Options options)
         {
@@ -109,12 +121,9 @@ namespace ConsoleTagsCloudApp
             container.Register(
                 Component
                     .For<IWordsSelector>()
-                    .ImplementedBy<LowerCaseWordsSelector>(),
-
-                Component
-                    .For<IWordsSelector>()
-                    .ImplementedBy<ExcludeLowLengthWordsSelector>(),
-
+                    .ImplementedBy<LowerCaseWordsSelector>());
+            WordsSelectorRegisterActions[options.WordsFilteringAlgorithm](container, options);
+            container.Register(
                 Component
                     .For<IWordsSelector>()
                     .ImplementedBy<ExcludeRareWordsSelector>()

@@ -19,11 +19,11 @@ namespace ConsoleTagsCloudApp
                     "-i", "image.png",
                     "-h", "5000",
                     "-w", "5000",
-                    "-n", "100",
+                    "-n", "300",
                     "-b", "255", "30", "30", "30",
-                    "-s", "Random",
-                    "-l", "255", "150", "255", "150",
-                    "-m", "255", "255", "0", "0"
+                    "-s", "Gradient",
+                    "-l", "#96ff96",
+                    "-m", "Red"
                 };
             }
             var options = new Options();

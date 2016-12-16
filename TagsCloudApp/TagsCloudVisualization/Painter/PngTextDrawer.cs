@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TagsCloudVisualization.Layouter;
 using TagsCloudVisualization.Painter.BrushSelectors;
 using TagsCloudVisualization.Painter.WordsPlacers;
-using Point = TagsCloudVisualization.Layouter.Point;
 using Rectangle = TagsCloudVisualization.Layouter.Rectangle;
 using Size = TagsCloudVisualization.Layouter.Size;
 

@@ -15,7 +15,7 @@ namespace TagsCloudVisualization.Painter.BrushSelectors
             : this(wordsCounts, colorsPair.MostFrequent, colorsPair.LeastFrequent)
         { }
 
-        public GradientBrushSelector(IEnumerable<int> wordsCounts, Color mostFrequentWordColor, Color leastFrequentWordColor)
+        private GradientBrushSelector(IEnumerable<int> wordsCounts, Color mostFrequentWordColor, Color leastFrequentWordColor)
         {
             this.mostFrequentWordColor = mostFrequentWordColor;
             this.leastFrequentWordColor = leastFrequentWordColor;

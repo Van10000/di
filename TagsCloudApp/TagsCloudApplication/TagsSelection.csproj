@@ -161,9 +161,10 @@
     <Compile Include="TextSuppliers\TxtFileTextSupplier.cs" />
     <Compile Include="Utils\IntValueDictionaryExtentions.cs" />
     <Compile Include="WordsSelectors\ComplexWordsSelector.cs" />
+    <Compile Include="WordsSelectors\ExcludeBoringWordsSelector.cs" />
     <Compile Include="WordsSelectors\ExcludeRareWordsSelector.cs" />
     <Compile Include="WordsStatisticsSuppliers\WordsStatisticsSupplier.cs" />
-    <Compile Include="WordsSelectors\ExcludePartsOfSpeechSelector.cs" />
+    <Compile Include="WordsSelectors\ExcludeWordsSelector.cs" />
     <Compile Include="WordsSelectors\ExcludeLowLengthWordsSelector.cs" />
     <Compile Include="WordsSelectors\IWordsSelector.cs" />
     <Compile Include="WordsSelectors\LowerCaseWordsSelector.cs" />
@@ -171,23 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="english-caseless-left3words-distsim.tagger" />
-    <None Include="english-caseless-left3words-distsim.tagger.props" />
-    <None Include="Russian.aff">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Russian.dic">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="word_definition_headers\de.txt" />
-    <Content Include="word_definition_headers\en.txt" />
-    <Content Include="word_definition_headers\Readme.txt" />
-    <Content Include="word_definition_headers\ro.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

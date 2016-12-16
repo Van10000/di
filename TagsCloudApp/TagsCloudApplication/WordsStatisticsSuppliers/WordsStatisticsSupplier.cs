@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using TagsCloudApplication.TextSuppliers;
 using TagsCloudApplication.Utils;
+using System.Linq;
 
 namespace TagsCloudApplication.WordsStatisticsSuppliers
 {
@@ -22,7 +24,8 @@ namespace TagsCloudApplication.WordsStatisticsSuppliers
                 if (char.IsLetter(text[i]))
                 {
                     var word = GetWord(text, i, out i);
-                    words.AddIntValue(word, 1);
+                    if (word != null)
+                        words.AddIntValue(word, 1);
                 }
             return words;
         }
@@ -39,7 +42,20 @@ namespace TagsCloudApplication.WordsStatisticsSuppliers
                     nextPosition = i;
                     break;
                 }
+            //var start = Math.Max(currentPosition - 2, 0);
+            //var finish = Math.Min(nextPosition + 2, text.Length);
+            //var context = text.Substring(start, finish - start + 1); // for debug
+            if (IsAnySymbolAtPosition(text, currentPosition - 1, "'’`") || IsAnySymbolAtPosition(text, nextPosition, "'’`"))
+                return null;
             return result.ToString();
+        }
+
+        private bool IsAnySymbolAtPosition(string str, int pos, IEnumerable<char> symbols)
+        {
+            return 
+                pos >= 0 && 
+                pos < str.Length && 
+                symbols.Contains(str[pos]);
         }
     }
 }

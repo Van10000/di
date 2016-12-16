@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TagsCloudVisualization.Layouter;
 using Size = TagsCloudVisualization.Layouter.Size;
 
 namespace TagsCloudVisualization
@@ -23,7 +18,7 @@ namespace TagsCloudVisualization
         public static SizeF GetMultiplied(this SizeF size, float multiplier) 
             => new SizeF(size.Width * multiplier, size.Height * multiplier);
 
-        public static Size Ceiling(this SizeF size) => new Size(Ceil(size.Width), Ceil(size.Height));
+        public static Size Ceil(this SizeF size) => new Size(Ceil(size.Width), Ceil(size.Height));
 
         public static bool IsInside(this SizeF size, Size appropriateSize)
         {

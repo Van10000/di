@@ -60,7 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcludePartsOfSpeechSelectorTests.cs" />
+    <Compile Include="ExcludeWordsSelectorTests.cs" />
     <Compile Include="ExcludeRareWordsSelectorTests.cs" />
     <Compile Include="LowerCaseSelectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,12 +76,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="word_definition_headers\de.txt" />
-    <Content Include="word_definition_headers\en.txt" />
-    <Content Include="word_definition_headers\Readme.txt" />
-    <Content Include="word_definition_headers\ro.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
