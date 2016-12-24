@@ -11,14 +11,15 @@ using TagsCloudVisualization.Layouter;
 using TagsCloudVisualization.Painter;
 using TagsCloudVisualization.Painter.BrushSelectors;
 using TagsCloudVisualization.Painter.WordsPlacers;
+using Utils;
 using Size = TagsCloudVisualization.Layouter.Size;
 
 namespace ConsoleTagsCloudApp
 {
     internal static class WindsorContainerUtils
     {
-        private static readonly Dictionary<BrushSelectorType, Action<Options, WindsorContainer, Dictionary<string, int>>> BrushSelectorRegisterActions =
-            new Dictionary<BrushSelectorType, Action<Options, WindsorContainer, Dictionary<string, int>>>()
+        private static readonly Dictionary<BrushSelectorType, Func<Options, WindsorContainer, Dictionary<string, int>, Result<None>>> BrushSelectorRegisterActions =
+            new Dictionary<BrushSelectorType, Func<Options, WindsorContainer, Dictionary<string, int>, Result<None>>>()
         {
             {BrushSelectorType.Random, (options, container, stat) => RegisterRandomBrushSelector(container)},
             {BrushSelectorType.Single, (options, container, stat) => RegisterSingleColorBrushSelector(container, options, stat)},
@@ -32,35 +33,42 @@ namespace ConsoleTagsCloudApp
             {FilteringAlgorithmName.ExcludeLowLength, RegisterExcludeLowLengthSelector }
         };
         
-        private static void RegisterRandomBrushSelector(WindsorContainer container)
+        private static Result<None> RegisterRandomBrushSelector(WindsorContainer container)
         {
             container.Register(
                 Component
                     .For<IBrushSelector>()
                     .ImplementedBy<RandomColorBrushSelector>());
+            return Result.Ok();
         }
 
-        private static void RegisterSingleColorBrushSelector(WindsorContainer container, Options options, Dictionary<string, int> wordsStatistics)
+        private static Result<None> RegisterSingleColorBrushSelector(WindsorContainer container, Options options, Dictionary<string, int> wordsStatistics)
         {
-            container.Register(
-                Component
-                    .For<IBrushSelector>()
-                    .ImplementedBy<SingleColorBrushSelector>()
-                    .DependsOn(Dependency.OnValue<Color>(ColorParser.Parse(options.TextColor))));
+            return ColorParser.Parse(options.TextColor)
+                .Then(color =>
+                container.Register(
+                    Component
+                        .For<IBrushSelector>()
+                        .ImplementedBy<SingleColorBrushSelector>()
+                        .DependsOn(Dependency.OnValue<Color>(color))))
+                .Then(x => { });
         }
 
-        private static void RegisterGradientColorBrushSelector(WindsorContainer container, Options options, Dictionary<string, int> wordsStatistics)
+        private static Result<None> RegisterGradientColorBrushSelector(WindsorContainer container, Options options, Dictionary<string, int> wordsStatistics)
         {
-            var colorPair = new GradientColorsPair(
-                ColorParser.Parse(options.MostFrequentTextColor),
-                ColorParser.Parse(options.LeastFrequentTextColor));
+            var colorsPair = 
+                from mostFrequentColor in ColorParser.Parse(options.MostFrequentTextColor).RefineError("Most frequent color incorrect")
+                from leastFrequentColor in ColorParser.Parse(options.LeastFrequentTextColor).RefineError("Least frequent color incorrect")
+                select new GradientColorsPair(mostFrequentColor, leastFrequentColor);
 
-            container.Register(
-                Component
-                    .For<IBrushSelector>()
-                    .ImplementedBy<GradientBrushSelector>()
-                    .DependsOn(Dependency.OnValue<IEnumerable<int>>(wordsStatistics.Select(pair => pair.Value)))
-                    .DependsOn(Dependency.OnValue<GradientColorsPair>(colorPair)));
+            return colorsPair
+                .Then(colors => container.Register(
+                    Component
+                        .For<IBrushSelector>()
+                        .ImplementedBy<GradientBrushSelector>()
+                        .DependsOn(Dependency.OnValue<IEnumerable<int>>(wordsStatistics.Select(pair => pair.Value)))
+                        .DependsOn(Dependency.OnValue<GradientColorsPair>(colors))))
+                .Then(x => { });
         }
 
         private static void RegisterExcludeLowLengthSelector(WindsorContainer container, Options options)
@@ -84,29 +92,40 @@ namespace ConsoleTagsCloudApp
                     .ImplementedBy<ExcludeBoringWordsSelector>());
         }
 
-        public static void RegisterTextDrawerComponents(WindsorContainer container, Options options, Dictionary<string, int> wordsStatistics)
+        public static Result<None> RegisterTextDrawerComponents(WindsorContainer container, Options options, Dictionary<string, int> wordsStatistics)
         {
-            var imageSize = new Size(options.ImageWidth, options.ImageHeight);
-            var backgroundColor = ColorParser.Parse(options.BackgroundColor);
-            var fontFamily = new FontFamily(options.FontFamily);
-
+            var imageSize = Result.Of(() => new Size(options.ImageWidth, options.ImageHeight)).RefineError("Incorrect size");
+            var backgroundColor = ColorParser.Parse(options.BackgroundColor).RefineError("Incorrect background color");
+            var fontFamily = Result.Of(() => new FontFamily(options.FontFamily)).RefineError("Incorrect font family");
+            
             container.Register(
                 Component
                     .For<ILayouter>()
                     .ImplementedBy<CircularCloudLayouter>());
+            var placerRegisterResult = imageSize.Then(size =>
             container.Register(
                 Component
                     .For<IWordsPlacer>()
                     .ImplementedBy<LinearAreaGrowthWordsPlacer>()
-                    .DependsOn(Dependency.OnValue<Size>(imageSize)));
-            BrushSelectorRegisterActions[options.TextBrushSelector](options, container, wordsStatistics);
+                    .DependsOn(Dependency.OnValue<Size>(size))));
+
+            var brushRegisterResult = BrushSelectorRegisterActions[options.TextBrushSelector](options, container, wordsStatistics);
+
+            var returnResult = from placerRes in placerRegisterResult
+                               from brushRes in brushRegisterResult
+                               from backColor in backgroundColor
+                               from size in imageSize
+                               from fontFam in fontFamily
+                               select
             container.Register(
                 Component
                     .For<ITextDrawer>()
                     .ImplementedBy<PngTextDrawer>()
-                    .DependsOn(Dependency.OnValue<Color>(backgroundColor))
-                    .DependsOn(Dependency.OnValue<Size>(imageSize))
-                    .DependsOn(Dependency.OnValue<FontFamily>(fontFamily)));
+                    .DependsOn(Dependency.OnValue<Color>(backColor))
+                    .DependsOn(Dependency.OnValue<Size>(size))
+                    .DependsOn(Dependency.OnValue<FontFamily>(fontFam)));
+
+            return returnResult.Then(x => { });
         }
 
         public static void RegisterWordsSelectorComponents(WindsorContainer container, Options options)

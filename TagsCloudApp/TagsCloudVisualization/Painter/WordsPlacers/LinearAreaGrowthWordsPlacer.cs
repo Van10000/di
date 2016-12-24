@@ -26,6 +26,8 @@ namespace TagsCloudVisualization.Painter.WordsPlacers
 
         public WordPlaced[] GetWordsFormatted(Dictionary<string, int> wordsStatistics, Dictionary<string, SizeF> wordsRelativeSizes)
         {
+            if (wordsStatistics.Count == 0)
+                return new WordPlaced[0];
             var sizes = wordsStatistics
                 .OrderByDescending(pair => pair.Value)
                 .Select(pair => wordsRelativeSizes[pair.Key].GetMultiplied(pair.Value))

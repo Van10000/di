@@ -4,6 +4,8 @@ using System.Text;
 using TagsCloudApplication.TextSuppliers;
 using TagsCloudApplication.Utils;
 using System.Linq;
+using Utils;
+
 
 namespace TagsCloudApplication.WordsStatisticsSuppliers
 {
@@ -16,9 +18,15 @@ namespace TagsCloudApplication.WordsStatisticsSuppliers
             this.textSupplier = textSupplier;
         }
 
-        public Dictionary<string, int> GetWordsStatistics()
+        public Result<Dictionary<string, int>> GetWordsStatistics()
         {
-            var text = textSupplier.SupplyText();
+            return textSupplier
+                .SupplyText()
+                .Then(GetWordsStatistics);
+        }
+
+        private static Dictionary<string, int> GetWordsStatistics(string text)
+        {
             var words = new Dictionary<string, int>();
             for (var i = 0; i < text.Length; ++i)
                 if (char.IsLetter(text[i]))
@@ -30,7 +38,7 @@ namespace TagsCloudApplication.WordsStatisticsSuppliers
             return words;
         }
 
-        private string GetWord(string text, int currentPosition, out int nextPosition)
+        private static string GetWord(string text, int currentPosition, out int nextPosition)
         {
             var result = new StringBuilder();
             nextPosition = text.Length;
@@ -50,11 +58,11 @@ namespace TagsCloudApplication.WordsStatisticsSuppliers
             return result.ToString();
         }
 
-        private bool IsAnySymbolAtPosition(string str, int pos, IEnumerable<char> symbols)
+        private static bool IsAnySymbolAtPosition(string str, int pos, IEnumerable<char> symbols)
         {
-            return 
-                pos >= 0 && 
-                pos < str.Length && 
+            return
+                pos >= 0 &&
+                pos < str.Length &&
                 symbols.Contains(str[pos]);
         }
     }

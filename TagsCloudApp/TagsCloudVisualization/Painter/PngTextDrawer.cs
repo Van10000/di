@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using TagsCloudVisualization.Painter.BrushSelectors;
 using TagsCloudVisualization.Painter.WordsPlacers;
+using Utils;
 using Rectangle = TagsCloudVisualization.Layouter.Rectangle;
 using Size = TagsCloudVisualization.Layouter.Size;
 
@@ -25,7 +26,7 @@ namespace TagsCloudVisualization.Painter
             this.imageSize = imageSize;
         }
         
-        public void WritePictureToFile(Dictionary<string, int> wordsStatistics, string filename)
+        public Result<None> WritePictureToFile(Dictionary<string, int> wordsStatistics, string filename)
         {
             var bitmap = new Bitmap(imageSize.Width, imageSize.Height);
             var graphics = Graphics.FromImage(bitmap);
@@ -42,7 +43,8 @@ namespace TagsCloudVisualization.Painter
                     DrawFormattedWord(graphics, word, brush);
                 }
             }
-            bitmap.Save(filename);
+
+            return Result.OfAction(() => bitmap.Save(filename)).RefineError("Could not write to file");
         }
 
         private Dictionary<string, SizeF> GetWordsRelativeSizes(IEnumerable<string> words, Graphics g)

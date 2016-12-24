@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace ConsoleTagsCloudApp
 {
@@ -21,13 +22,15 @@ namespace ConsoleTagsCloudApp
             return Color.FromArgb(channels[0], channels[1], channels[2]);
         }
 
-        public static Color Parse(string[] stringRepresentation)
+        public static Result<Color> Parse(string[] stringRepresentation)
         {
+            if (stringRepresentation == null)
+                return Result.Fail<Color>("Color not specified");
             if (stringRepresentation.Length == 1)
-                return HexToColor(stringRepresentation[0]);
+                return Result.Of(() => HexToColor(stringRepresentation[0]));
             if (stringRepresentation.Length == 4 || stringRepresentation.Length == 3)
-                return ChannelsToColor(stringRepresentation.Select(int.Parse).ToArray());
-            throw new ArgumentException("Unknown color representation");
+                return Result.Of(() => ChannelsToColor(stringRepresentation.Select(int.Parse).ToArray()));
+            return Result.Fail<Color>("Unknown color representation."); 
         }
     }
 }

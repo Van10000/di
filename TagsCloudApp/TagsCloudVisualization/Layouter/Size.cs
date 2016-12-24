@@ -12,7 +12,7 @@ namespace TagsCloudVisualization.Layouter
         public Size(int width, int height)
         {
             if (width <= 0 || height <= 0)
-                throw new ArgumentOutOfRangeException(
+                throw new Exception(
                     $"Both width and height should be positive. " +
                     $"Your width:{width}, your height:{height}");
             Width = width;

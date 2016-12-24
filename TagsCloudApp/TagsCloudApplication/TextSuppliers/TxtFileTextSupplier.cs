@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Utils;
 
 namespace TagsCloudApplication.TextSuppliers
 {
@@ -11,9 +12,10 @@ namespace TagsCloudApplication.TextSuppliers
             this.filename = filename;
         }
         
-        public string SupplyText()
+        public Result<string> SupplyText()
         {
-            return File.ReadAllText(filename);
+            return Result
+                .Of(() => File.ReadAllText(filename));
         }
     }
 }

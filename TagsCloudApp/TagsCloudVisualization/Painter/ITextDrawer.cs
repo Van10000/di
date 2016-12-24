@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Utils;
 
 namespace TagsCloudVisualization.Painter
 {
     public interface ITextDrawer
     {
-        void WritePictureToFile(Dictionary<string, int> wordsStatistics, string filename);
+        Result<None> WritePictureToFile(Dictionary<string, int> wordsStatistics, string filename);
     }
 }

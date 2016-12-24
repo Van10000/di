@@ -80,6 +80,10 @@
       <Project>{33121f10-0159-4c38-b790-b17d00230605}</Project>
       <Name>TagsCloudVisualization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{08b46ae3-1172-4bc9-a717-266fbe4c515e}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

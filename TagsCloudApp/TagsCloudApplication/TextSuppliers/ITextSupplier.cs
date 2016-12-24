@@ -1,7 +1,9 @@
-﻿namespace TagsCloudApplication.TextSuppliers
+﻿using Utils;
+
+namespace TagsCloudApplication.TextSuppliers
 {
     public interface ITextSupplier
     {
-        string SupplyText();
+        Result<string> SupplyText();
     }
 }
